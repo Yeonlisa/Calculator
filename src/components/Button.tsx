@@ -3,11 +3,11 @@ import styled from 'styled-components';
 
 export enum ButtonType {
     Number,
-    Operation
+    Operation,
 }
 
-type Props = {
-    type?: ButtonType;
+type Props = React.HTMLProps<HTMLButtonElement> & {
+    buttonType?: ButtonType;
     label: string;
     position?: [x: number, y: number];
     width?: number;
@@ -22,7 +22,15 @@ const StyledButton = styled.button`
     font-size: 24px;
 `;
 
-const Button: React.FC<Props> = ({ type = ButtonType.Operation, label , position, width, height }) => {
+const Button: React.FC<Props> = ({ 
+    buttonType = ButtonType.Operation, 
+    children, 
+    label, 
+    position, 
+    width, 
+    height, 
+    onClick
+}) => {
     const styles: React.CSSProperties = {};
     if(position) {
         styles.gridColumnStart = position[0] + 1;
@@ -34,13 +42,13 @@ const Button: React.FC<Props> = ({ type = ButtonType.Operation, label , position
     if(width) {
         styles.gridColumnEnd = `span ${width}`;
     }
-    if(type === ButtonType.Number) {
+    if(buttonType === ButtonType.Number) {
         styles.color = '#00203F';
         styles.background = '#ADEFD1';
     }
 
     return (
-        <StyledButton style={styles}>
+        <StyledButton onClick={onClick} style={styles}>
             {label}
         </StyledButton>
     )
